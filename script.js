@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const personalMovieDB = {
     count: 0,
@@ -8,36 +8,64 @@ const personalMovieDB = {
     privat: false
 }
 
-let count = 0;
-do {
-    count = +prompt('How many films have you watched?', 0);
-} while (count == 0);
+start();
+rememberMyFilms();
+detectPersonalLevel();
+writeYourGenres();
+showMyDB();
 
-personalMovieDB.numberOfFilms = count
+function start() {
+    let numberOfFilms = 0;
 
-for(let i = 0; i < 2; i++) { 
-    let lastFilm = null;
-    do { 
-        lastFilm = prompt('What was the last movie you watched?', '');
-    } while(lastFilm == null || lastFilm == '' || lastFilm.length == 0 || lastFilm.length > 50);
-
-    let lastFilmRating = null;
     do {
-        lastFilmRating = +prompt('How do you rate this?', 0);
-    } while(lastFilmRating == null || lastFilmRating == 0 || lastFilmRating.length == 0 || lastFilmRating.length > 50);
+        numberOfFilms = prompt('How many films have you watched?', '');
+    } while (numberOfFilms == null || numberOfFilms == '' || isNaN(numberOfFilms));
 
-    personalMovieDB.movies[lastFilm] = lastFilmRating;
+    personalMovieDB.count = numberOfFilms;
 }
 
-if (personalMovieDB.count > 0 && personalMovieDB.count <= 10) {
-    alert("You've watched quite a few films!");
-} else if (personalMovieDB.count > 10 && personalMovieDB.count <= 30) {
-    alert('You are a classical spectator!');
-} else if (personalMovieDB.count > 30) {
-    alert('You are a movie fan!');
-} else {
-    alert('Error!');
+function rememberMyFilms() {
+    for (let i = 0; i < 2; i++) { 
+        let lastFilm = null;
+        do { 
+            lastFilm = prompt('What was the last movie you watched?', '');
+        } while(lastFilm == null || lastFilm == '' || lastFilm.length > 50);
+
+        let lastFilmRating = null;
+        do {
+            lastFilmRating = prompt('How do you rate this?', '');
+        } while(lastFilmRating == null || lastFilmRating == '' || isNaN(lastFilmRating));
+
+        personalMovieDB.movies[lastFilm] = lastFilmRating;
+    }
 }
 
-console.log(personalMovieDB);
+function detectPersonalLevel() {
+    if (personalMovieDB.count > 0 && personalMovieDB.count <= 10) {
+        alert("You've watched quite a few films!");
+    } else if (personalMovieDB.count > 10 && personalMovieDB.count <= 30) {
+        alert('You are a classical spectator!');
+    } else if (personalMovieDB.count > 30) {
+        alert('You are a movie fan!');
+    } else {
+        alert('Error!');
+    }
+}
+
+function writeYourGenres() {
+    for (let i = 0; i < 3; i++) {
+        let genre = null;
+        do {
+            genre = prompt(`What's your favorite genre at number ${i+1}?`, '');
+        } while (genre == null || genre == '');
+
+        personalMovieDB.genres[i] = genre;
+    }
+}
+
+function showMyDB() {
+    if (!personalMovieDB.privat) {
+        console.log(personalMovieDB);
+    }
+}
 
